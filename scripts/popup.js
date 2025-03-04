@@ -15,10 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const proxy2Config = {
         type: "http",
-        host: "another.proxy.provider.com",
-        port: 8080,
-        username: "username2",
-        password: "password2"
+        host: "rotating.proxyempire.io",
+        port: 9001,
+        username: "AcpVQtYstcLT4Q7d",
+        password: "wifi;fr;;;"
     };
 
     // Check proxy status on popup load
