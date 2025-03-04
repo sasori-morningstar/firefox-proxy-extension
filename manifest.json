@@ -5,16 +5,16 @@
     "description": "A simple Firefox Proxy Extension",
     "browser_specific_settings": {
         "gecko": {
-            "id": "firefox.proxy@test.com"
+            "id": "firefoxproxyextension@sasori.moringstar"
         }
     },
     "icons": {
         "48": "icon48.png"
     },
     "action": {
-        "default_popup": "popup.html",
+        "default_popup": "templates/popup.html",
         "default_icon": {
-            "48": "icon48.png"
+            "48": "assets/icon48.png"
         }
     }
 }
