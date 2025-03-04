@@ -1,55 +1,37 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-  <title>Proxy Settings</title>
-  <style>
-    body {
-      width: 300px;
-      padding: 10px;
-      font-family: Arial, sans-serif;
-    }
-
-    input,
-    select {
-      width: 100%;
-      margin-bottom: 10px;
-      box-sizing: border-box;
-    }
-
-    .status {
-      margin-top: 10px;
-      text-align: center;
-    }
-  </style>
+    <title>Proxy Connector</title>
+    <style>
+        body {
+            width: 250px;
+            padding: 15px;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+        #status {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .connected {
+            color: green;
+        }
+        .disconnected {
+            color: red;
+        }
+    </style>
 </head>
-
 <body>
-  <h2>Proxy Configuration</h2>
-
-  <label for="proxyType">Proxy Type:</label>
-  <select id="proxyType">
-    <option value="socks">SOCKS5</option>
-    <option value="http">HTTP</option>
-    <option value="https">HTTPS</option>
-  </select>
-
-  <label for="proxyHost">Proxy Host:</label>
-  <input type="text" id="proxyHost" placeholder="Proxy Server Address" required>
-
-  <label for="proxyPort">Proxy Port:</label>
-  <input type="number" id="proxyPort" placeholder="Proxy Port" required>
-
-  <label for="proxyUsername">Username (Optional):</label>
-  <input type="text" id="proxyUsername" placeholder="Proxy Username">
-
-  <label for="proxyPassword">Password (Optional):</label>
-  <input type="password" id="proxyPassword" placeholder="Proxy Password">
-
-  <button id="saveProxy">Save Proxy Settings</button>
-  <div id="status" class="status"></div>
-
-  <script src="../scripts/popup.js"></script>
+    <h2>Proxy Connection</h2>
+    <button id="connectProxy">Connect Proxy</button>
+    <button id="disconnectProxy">Disconnect Proxy</button>
+    <div id="status"></div>
+    <script src="../scripts/popup.js"></script>
 </body>
-
 </html>

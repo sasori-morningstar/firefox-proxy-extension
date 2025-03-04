@@ -4,29 +4,29 @@
     "version": "1.0",
     "description": "A simple Firefox Proxy Extension",
     "permissions": [
-        "proxy",
-        "storage",
-        "webRequest",
-        "webRequestBlocking"
+      "proxy",
+      "storage",
+      "webRequest",
+      "webRequestBlocking"
     ],
     "host_permissions": [
-        "<all_urls>"
+      "<all_urls>"
     ],
     "browser_specific_settings": {
-        "gecko": {
-            "id": "firefoxproxyextension@sasori.moringstar"
-        }
+      "gecko": {
+        "id": "firefoxproxyextension@sasori.moringstar"
+      }
     },
     "background": {
-        "scripts": ["scripts/background.js"]
+      "scripts": ["scripts/background.js"]
     },
     "icons": {
-        "48": "icon48.png"
+      "48": "assets/icon48.png"
     },
     "action": {
-        "default_popup": "templates/popup.html",
-        "default_icon": {
-            "48": "assets/icon48.png"
-        }
+      "default_popup": "templates/popup.html",
+      "default_icon": {
+        "48": "assets/icon48.png"
+      }
     }
-}
+   }

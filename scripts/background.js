@@ -1,82 +1,116 @@
-// Function to configure proxy for all web requests
+// Global variable to store current proxy configuration and listeners
+let currentProxyConfig = null;
+let proxyListener = null;
+let authListener = null;
+
+// Proxy configuration function
 function setupProxyRouting(proxyConfig) {
     try {
-        // Remove any existing proxy settings
-        browser.proxy.settings.clear({});
+        // Store the current proxy configuration
+        currentProxyConfig = proxyConfig;
 
-        if (!proxyConfig || !proxyConfig.host) {
-            console.log("No proxy configuration found. Skipping proxy setup.");
-            return;
+        // Remove any existing proxy listeners first
+        if (proxyListener) {
+            browser.proxy.onRequest.removeListener(proxyListener);
         }
 
-        // Construct comprehensive proxy configuration
-        const proxySettings = {
-            proxyType: "manual",
-            http: `${proxyConfig.type}://${proxyConfig.host}:${proxyConfig.port}`,
-            https: `${proxyConfig.type}://${proxyConfig.host}:${proxyConfig.port}`,
-            socks: `${proxyConfig.type}://${proxyConfig.host}:${proxyConfig.port}`,
-            httpProxyAll: true
+        // Create a new proxy listener function
+        proxyListener = (requestInfo) => {
+            return {
+                type: proxyConfig.type.toUpperCase(),
+                host: proxyConfig.host,
+                port: proxyConfig.port,
+                username: proxyConfig.username,
+                password: proxyConfig.password
+            };
         };
 
-        // Set proxy settings
-        browser.proxy.settings.set({ value: proxySettings });
-
-        // Interceptor for all web requests to ensure proxy usage
+        // Add the proxy listener
         browser.proxy.onRequest.addListener(
-            (details) => {
-                return {
-                    type: proxyConfig.type.toUpperCase(),
-                    host: proxyConfig.host,
-                    port: proxyConfig.port
-                };
-            },
+            proxyListener,
             { urls: ["<all_urls>"] }
         );
 
-        // Handle proxy authentication if credentials are provided
-        if (proxyConfig.username && proxyConfig.password) {
-            browser.webRequest.onAuthRequired.addListener(
-                (details, callback) => {
-                    callback({
-                        authCredentials: {
-                            username: proxyConfig.username,
-                            password: proxyConfig.password
-                        }
-                    });
-                },
-                { urls: ["<all_urls>"] },
-                ["blocking"]
-            );
-        }
+        // Handle proxy authentication
+        authListener = (details) => {
+            // If credentials are provided, automatically return them
+            if (proxyConfig.username && proxyConfig.password) {
+                return {
+                    authCredentials: {
+                        username: proxyConfig.username,
+                        password: proxyConfig.password
+                    }
+                };
+            }
+            // If no credentials, allow default browser behavior
+            return {};
+        };
 
-        console.log("Proxy routing configured:", proxySettings);
+        browser.webRequest.onAuthRequired.addListener(
+            authListener,
+            { urls: ["<all_urls>"] },
+            ["blocking"]
+        );
+
+        console.log("Proxy routing configured:", proxyConfig);
+        return true;
     } catch (error) {
         console.error("Error setting up proxy routing:", error);
+        return false;
     }
 }
 
-// Listen for messages from popup to update proxy
+// Function to disconnect proxy
+function disconnectProxy() {
+    try {
+        // Remove proxy listener if it exists
+        if (proxyListener) {
+            browser.proxy.onRequest.removeListener(proxyListener);
+            proxyListener = null;
+        }
+
+        // Remove authentication listener if it exists
+        if (authListener) {
+            browser.webRequest.onAuthRequired.removeListener(authListener);
+            authListener = null;
+        }
+
+        // Clear current proxy configuration
+        currentProxyConfig = null;
+
+        console.log("Proxy disconnected");
+        return true;
+    } catch (error) {
+        console.error("Error disconnecting proxy:", error);
+        return false;
+    }
+}
+
+// Listen for messages from popup
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.type === "updateProxy") {
-        // Save proxy configuration to local storage
-        browser.storage.local.set({ proxyConfig: request.proxy }, () => {
-            setupProxyRouting(request.proxy);
-            sendResponse({ success: true });
+    if (request.type === "connectProxy") {
+        const success = setupProxyRouting(request.proxy);
+        sendResponse({ success: success });
+        return true;
+    }
+
+    if (request.type === "disconnectProxy") {
+        const success = disconnectProxy();
+        sendResponse({ success: success });
+        return true;
+    }
+
+    if (request.type === "checkProxyStatus") {
+        sendResponse({ 
+            isConnected: currentProxyConfig !== null,
+            proxyConfig: currentProxyConfig
         });
         return true;
     }
 });
 
-// Initialize proxy on extension startup
+// On startup, check if we had a previous proxy configuration
 browser.runtime.onStartup.addListener(async () => {
-    const { proxyConfig } = await browser.storage.local.get("proxyConfig");
-    if (proxyConfig) {
-        setupProxyRouting(proxyConfig);
-    }
-});
-
-// Initialize proxy on extension installation
-browser.runtime.onInstalled.addListener(async () => {
     const { proxyConfig } = await browser.storage.local.get("proxyConfig");
     if (proxyConfig) {
         setupProxyRouting(proxyConfig);
