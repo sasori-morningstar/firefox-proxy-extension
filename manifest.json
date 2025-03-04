@@ -1,0 +1,20 @@
+{
+    "manifest_version": 3,
+    "name": "Firefox Proxy Extension",
+    "version": "1.0",
+    "description": "A simple Firefox Proxy Extension",
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "firefox.proxy@test.com"
+        }
+    },
+    "icons": {
+        "48": "icon48.png"
+    },
+    "action": {
+        "default_popup": "popup.html",
+        "default_icon": {
+            "48": "icon48.png"
+        }
+    }
+}
