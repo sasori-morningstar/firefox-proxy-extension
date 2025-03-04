@@ -3,10 +3,22 @@
     "name": "Firefox Proxy Extension",
     "version": "1.0",
     "description": "A simple Firefox Proxy Extension",
+    "permissions": [
+        "proxy",
+        "storage",
+        "webRequest",
+        "webRequestBlocking"
+    ],
+    "host_permissions": [
+        "<all_urls>"
+    ],
     "browser_specific_settings": {
         "gecko": {
             "id": "firefoxproxyextension@sasori.moringstar"
         }
+    },
+    "background": {
+        "scripts": ["scripts/background.js"]
     },
     "icons": {
         "48": "icon48.png"
