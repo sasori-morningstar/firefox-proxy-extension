@@ -6,13 +6,13 @@ let authListener = null;
 // Proxy configuration function
 function setupProxyRouting(proxyConfig) {
     try {
-        // Store the current proxy configuration
-        currentProxyConfig = proxyConfig;
-
         // Remove any existing proxy listeners first
         if (proxyListener) {
             browser.proxy.onRequest.removeListener(proxyListener);
         }
+
+        // Store the current proxy configuration
+        currentProxyConfig = proxyConfig;
 
         // Create a new proxy listener function
         proxyListener = (requestInfo) => {
