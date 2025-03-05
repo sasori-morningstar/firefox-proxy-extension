@@ -77,4 +77,10 @@ const proxy2Config = {
 
 After making your changes, save the file and refresh the extension in Firefox to apply the new configurations.
 
+### Figma Prototype
+
+Explore the interactive design for the Firefox Proxy Extension on Figma. Click the link below to view the complete prototype:
+
+[View Figma Prototype](https://www.figma.com/design/qknjXkUDtHUUdlBCGjGIHc/Firefox-Proxy-Extension)
+
 Enjoy seamless proxy management with this extension!
