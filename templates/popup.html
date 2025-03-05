@@ -1,38 +1,249 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Proxy Connector</title>
+    <title>Firefox Proxy Extension</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
+    <!-- Our project just needs Font Awesome Solid + Brands -->
+    <script defer src="../assets/fontawesome/js/brands.js"></script>
+    <script defer src="../assets/fontawesome/js/solid.js"></script>
+    <script defer src="../assets/fontawesome/js/fontawesome.js"></script>
+
     <style>
         body {
-            width: 300px;
-            padding: 15px;
-            font-family: Arial, sans-serif;
+
+            font-family: "Roboto", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+            font-variation-settings: "wdth" 100;
             text-align: center;
+            color: #F9FAFB;
+            padding: 0;
+            margin: 0;
+            font-size: 16px;
+            background-color: #0F172A;
         }
+
+        select {
+            appearance: none;
+            padding-right: 40px;
+            /* Space for the arrow */
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+            font: inherit;
+            cursor: pointer;
+        }
+
+
         button {
             width: 100%;
             padding: 10px;
             margin-bottom: 10px;
             cursor: pointer;
         }
+
         #status {
             margin-top: 10px;
             font-weight: bold;
         }
+
         .connected {
             color: green;
         }
+
         .disconnected {
             color: red;
         }
+
+        #header {
+            padding: 32px;
+            display: flex;
+            gap: 51px;
+            background-color: #020617;
+            align-items: center;
+        }
+
+        .vertical-divider {
+            width: 2px;
+            background-color: rgba(156, 163, 175, 0.3);
+            height: 100px;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            min-width: 200px;
+        }
+
+        #check-ip {
+            display: flex;
+            gap: 10px;
+            color: #4ADE80;
+            text-decoration: none;
+            font-weight: 500;
+            align-items: center;
+        }
+
+        #check-ip:hover {
+            color: #22C55E;
+        }
+
+        .info-label {
+            color: #9CA3AF;
+            font-weight: 500;
+        }
+
+        #main {
+            padding: 32px 51px;
+            display: flex;
+            gap: auto;
+            justify-content: space-around;
+            align-items: center;
+        }
+        
+
+        #proxy-select-container {
+            position: relative;
+            display: flex;
+        }
+
+        #input-icon {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 20px;
+            color: #8E8E93;
+        }
+        #main .column{
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 20px;
+        }
+        label{
+            display: block;
+        }
+        #proxy {
+            padding: 12px 51px;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 12px;
+            background-color: #F9FAFB;
+            min-width: 250px;
+        }
+        #main .row{
+            gap: 12px;
+            min-width: auto;
+            align-items: center;
+            width: 100%;
+            justify-content: center;
+        }
+        #power-btn{
+            width: 80px;
+            height: 80px;
+            border: 3px solid #F3EEEE;
+            padding: 6px;
+            color: #020617;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            transition: ease 0.3s;
+            position: relative;
+            top: -20px;
+        }
+        .power-clicked{
+            border-color: #4ADE80;
+        }
+        .power-clicked:hover{
+            border-color: #F3EEEE;
+        }
+        #power-btn:hover{
+            border-color: #4ADE80;
+        }
+        .power-circle{
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: #F3EEEE;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
     </style>
 </head>
+
 <body>
-    <h2>Proxy Connection</h2>
-    <button id="connectProxy1">Connect Proxy 1</button>
-    <button id="connectProxy2">Connect Proxy 2</button>
-    <button id="disconnectProxy">Disconnect Proxy</button>
-    <div id="status"></div>
+    <header id="header">
+        <div class="column">
+            <div class="row">
+                <p class="info-label">IP</p>
+                <p id="ip">77.13.197.123</p>
+            </div>
+            <div class="row">
+                <p class="info-label">ISP</p>
+                <p id="isp">O2 Deutschland</p>
+            </div>
+            <a href="https://ipinfo.io/json" id="check-ip">
+                <p>Check my IP</p>
+                <i class="fa-solid fa-up-right-from-square"></i>
+            </a>
+        </div>
+        <div class="vertical-divider"></div>
+        <div class="column">
+            <div class="row">
+                <p class="info-label">Country</p>
+                <p id="ip">Germany</p>
+            </div>
+            <div class="row">
+                <p class="info-label">Region</p>
+                <p id="isp">Saxony-Abd</p>
+            </div>
+            <div class="row">
+                <p class="info-label">City</p>
+                <p>Stockholm 23</p>
+            </div>
+        </div>
+    </header>
+    <main id="main">
+        <div class="column">
+            <label for="proxy">Proxy</label>
+            <div id="proxy-select-container">
+                <i class="fa-solid fa-earth-americas" id="input-icon"></i>
+                <select name="proxy" id="proxy">
+                    <option value="1">Proxy 1</option>
+                    <option value="2">Proxy 2</option>
+                </select>
+            </div>
+            <div class="row">
+                <div class="row">
+                    <i class="fa-solid fa-cloud-arrow-down"></i>
+                    <p>15kbps</p>
+                </div>
+                <div class="row">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <p>15kbps</p>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div id="power-btn">
+                <div class="power-circle">
+                    <i class="fa-solid fa-power-off"></i>
+                </div>
+            </div>
+        </div>
+        <!--<button id="connectProxy1">Connect Proxy 1</button>
+        <button id="connectProxy2">Connect Proxy 2</button>
+        <button id="disconnectProxy">Disconnect Proxy</button>
+        <div id="status"></div>-->
+    </main>
     <script src="../scripts/popup.js"></script>
 </body>
+
 </html>
