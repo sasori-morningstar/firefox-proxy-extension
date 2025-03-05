@@ -144,7 +144,7 @@
             width: 100%;
             justify-content: center;
         }
-        #power-btn{
+        .power-btn{
             width: 80px;
             height: 80px;
             border: 3px solid #F3EEEE;
@@ -157,14 +157,14 @@
             position: relative;
             top: -20px;
         }
+        .power-btn:hover{
+            border-color: #4ADE80;
+        }
         .power-clicked{
             border-color: #4ADE80;
         }
         .power-clicked:hover{
             border-color: #F3EEEE;
-        }
-        #power-btn:hover{
-            border-color: #4ADE80;
         }
         .power-circle{
             width: 100%;
@@ -198,15 +198,15 @@
         <div class="column">
             <div class="row">
                 <p class="info-label">Country</p>
-                <p id="ip">Germany</p>
+                <p id="country">Germany</p>
             </div>
             <div class="row">
                 <p class="info-label">Region</p>
-                <p id="isp">Saxony-Abd</p>
+                <p id="region">Saxony-Abd</p>
             </div>
             <div class="row">
                 <p class="info-label">City</p>
-                <p>Stockholm 23</p>
+                <p id="city">Stockholm 23</p>
             </div>
         </div>
     </header>
@@ -216,32 +216,28 @@
             <div id="proxy-select-container">
                 <i class="fa-solid fa-earth-americas" id="input-icon"></i>
                 <select name="proxy" id="proxy">
-                    <option value="1">Proxy 1</option>
-                    <option value="2">Proxy 2</option>
+                    <option value="proxy1">Proxy 1</option>
+                    <option value="proxy2">Proxy 2</option>
                 </select>
             </div>
             <div class="row">
                 <div class="row">
                     <i class="fa-solid fa-cloud-arrow-down"></i>
-                    <p>15kbps</p>
+                    <p id="downtime">0.0 bps</p>
                 </div>
                 <div class="row">
                     <i class="fa-solid fa-cloud-arrow-up"></i>
-                    <p>15kbps</p>
+                    <p id="uptime">0.0 bps</p>
                 </div>
             </div>
         </div>
         <div class="column">
-            <div id="power-btn">
+            <div class="power-btn">
                 <div class="power-circle">
                     <i class="fa-solid fa-power-off"></i>
                 </div>
             </div>
         </div>
-        <!--<button id="connectProxy1">Connect Proxy 1</button>
-        <button id="connectProxy2">Connect Proxy 2</button>
-        <button id="disconnectProxy">Disconnect Proxy</button>
-        <div id="status"></div>-->
     </main>
     <script src="../scripts/popup.js"></script>
 </body>

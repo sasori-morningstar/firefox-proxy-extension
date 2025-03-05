@@ -52,7 +52,7 @@ function setupProxyRouting(proxyConfig) {
             ["blocking"]
         );
 
-        console.log("Proxy routing configured:", proxyConfig);
+        //console.log("Proxy routing configured:", proxyConfig);
         return true;
     } catch (error) {
         console.error("Error setting up proxy routing:", error);
